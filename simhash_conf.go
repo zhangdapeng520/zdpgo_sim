@@ -1,0 +1,17 @@
+package zdpgo_sim
+
+import "github.com/zhangdapeng520/zdpgo_sim/similarity"
+
+func SimHash() OptionFunc {
+	return OptionFunc(func(o *option) {
+		if o.cmp == nil {
+			l := similarity.SimHash{}
+			o.base64 = true
+			o.cmp = l.CompareUtf8
+			if o.ascii {
+				o.cmp = l.CompareAscii
+			}
+		}
+	})
+
+}
