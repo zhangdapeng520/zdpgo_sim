@@ -8,7 +8,7 @@ import (
 
 type JaroWinkler struct {
 	MatchWindow int
-	// test use
+	// beda use
 	mw int
 	m  int
 	t  int

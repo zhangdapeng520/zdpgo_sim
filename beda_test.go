@@ -155,11 +155,11 @@ func TestDamerauLevenshteinDistance(t *testing.T) {
 		S1: "abc",
 		S2: "",
 		D:  3,
-	}, &TestLehvenstein{ // test swap
+	}, &TestLehvenstein{ // beda swap
 		S1: "abcde",
 		S2: "abced",
 		D:  1,
-	}, &TestLehvenstein{ // test swap
+	}, &TestLehvenstein{ // beda swap
 		S1: "abcde",
 		S2: "ebcda",
 		D:  2,

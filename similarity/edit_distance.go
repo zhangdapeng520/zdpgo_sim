@@ -1,7 +1,7 @@
 package similarity
 
 type EditDistance struct {
-	// test use
+	// beda use
 	mixed int
 }
 
