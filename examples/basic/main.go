@@ -70,4 +70,7 @@ func main() {
 	// 选择SimHash
 	r1 = zdpgo_sim.Compare(s1, s2, zdpgo_sim.SimHash())
 	fmt.Println("选择SimHash", r1)
+
+	var result float64
+	fmt.Println(zdpgo_sim.SimilarText(s1, s2, &result), result)
 }
