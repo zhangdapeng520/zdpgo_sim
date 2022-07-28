@@ -7,7 +7,6 @@ func compare(s1, s2 string, o *option) float64 {
 	if s, e := modifyStrAndCheck(o, &s1, &s2); e {
 		return s
 	}
-
 	return o.cmp(s1, s2)
 }
 
