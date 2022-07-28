@@ -7,9 +7,7 @@ import (
 // Compare 比较两个字符串相似度
 func Compare(s1, s2 string, opts ...Option) float64 {
 	var o option
-
 	o.fillOption(opts...)
-
 	return compare(s1, s2, &o)
 }
 

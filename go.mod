@@ -2,7 +2,10 @@ module github.com/zhangdapeng520/zdpgo_sim
 
 go 1.18
 
-require github.com/stretchr/testify v1.8.0
+require (
+	github.com/stretchr/testify v1.8.0
+	golang.org/x/text v0.3.7
+)
 
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
