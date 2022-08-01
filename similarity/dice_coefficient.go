@@ -6,9 +6,7 @@ import (
 )
 
 type DiceCoefficient struct {
-	Ngram int
-
-	//test use
+	Ngram int // k-gram 分段数量
 	l1    int
 	l2    int
 	mixed int
@@ -79,13 +77,12 @@ func (d *DiceCoefficient) setOrGet(set map[string]value, s string, add bool) (mi
 	return mixed, l
 }
 
+// CompareUtf8 比较UTF8编码的字符串
 func (d *DiceCoefficient) CompareUtf8(s1, s2 string) float64 {
 
 	set := make(map[string]value, len(s1)/3)
-	//TODO 边界比如字符长度小于ngram
 
 	mixed, l1 := d.setOrGet(set, s1, true)
-
 	mixed, l2 := d.setOrGet(set, s2, false)
 
 	d.l1 = l1

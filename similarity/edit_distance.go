@@ -1,11 +1,11 @@
 package similarity
 
+// EditDistance 编辑距离
 type EditDistance struct {
-	// beda use
 	mixed int
 }
 
-// ascii
+// CompareAscii 比较ascii编码
 func (e *EditDistance) CompareAscii(s1, s2 string) float64 {
 	cacheX := make([]int, len(s2))
 
@@ -44,7 +44,7 @@ func (e *EditDistance) CompareAscii(s1, s2 string) float64 {
 	return 1.0 - float64(cacheX[len(cacheX)-1])/float64(max(len(s1), len(s2)))
 }
 
-// utf8
+// CompareUtf8 比较UTF8编码
 func (e *EditDistance) CompareUtf8(utf8Str1, utf8Str2 string) float64 {
 	r1 := []rune(utf8Str1)
 	r2 := []rune(utf8Str2)

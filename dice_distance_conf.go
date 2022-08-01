@@ -12,7 +12,10 @@ func DiceCoefficient(ngram ...int) OptionFunc {
 			ngram2 = ngram[0]
 		}
 
+		// 创建算法对象
 		d := &similarity.DiceCoefficient{Ngram: ngram2}
+
+		// 赋值比较方法
 		o.cmp = d.CompareUtf8
 	})
 }
