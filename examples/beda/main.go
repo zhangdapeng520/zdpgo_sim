@@ -27,8 +27,8 @@ func main() {
 	jDiff := sd.JaroDistance()
 	jwDiff := sd.JaroWinklerDistance(0.1)
 
-	fmt.Println(tDiff)
 	fmt.Println(lDist)
+	fmt.Println(tDiff)
 	fmt.Println(jDiff)
 	fmt.Println(jwDiff)
 }
