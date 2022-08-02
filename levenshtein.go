@@ -1,13 +1,5 @@
 package zdpgo_sim
 
-/*
-@Time : 2022/7/27 16:41
-@Author : 张大鹏
-@File : levenshtein.go
-@Software: Goland2021.3.1
-@Description:
-*/
-
 // Levenshtein levenshtein()
 // costIns: Defines the cost of insertion.
 // costRep: Defines the cost of replacement.

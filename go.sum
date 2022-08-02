@@ -1,4 +1,6 @@
 github.com/zhangdapeng520/zdpgo_clearcode v0.1.0 h1:+kjJaK3q4cK4L72jFg/HZzMGPwyul8T3m8cIL0OFwyo=
 github.com/zhangdapeng520/zdpgo_clearcode v0.1.0/go.mod h1:GwA5f03xPsqTeizxRGBCK56jXgPt4fAaLulYi6Jx48Y=
+github.com/zhangdapeng520/zdpgo_pygments v0.1.1 h1:yL6xXDhYeyC6TrGD0gpNZ+25cJcgbZqfM8u9G3tbZaE=
+github.com/zhangdapeng520/zdpgo_pygments v0.1.1/go.mod h1:JAi7+d5AoITteSCd18OiJcBpFkQCeBuUzu1oj5IZDCo=
 golang.org/x/text v0.3.7 h1:olpwvP2KacW1ZWvsR7uQhoyTYvKAupfQrRGBFM352Gk=
 golang.org/x/text v0.3.7/go.mod h1:u+2+/6zg+i71rQMx5EYifcz6MCKuco9NR6JIITiCfzQ=

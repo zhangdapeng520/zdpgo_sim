@@ -12,11 +12,13 @@ func main() {
 	suffixs := []string{
 		".py",
 		".php",
-		".java", // TODO：Java无法过滤 对象.变量名 这种点出来的变量名
+		".java",
 		".c",
 		".cpp",
 	}
 	for _, suffix := range suffixs {
+		fmt.Println("\n正在比较后缀为", suffix, "类型的源码文件\n")
+
 		filePath1 := "examples/test_data/level2_1" + suffix
 		filePath2 := "examples/test_data/level2_2" + suffix
 

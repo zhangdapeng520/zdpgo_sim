@@ -1,13 +1,5 @@
 package zdpgo_sim
 
-/*
-@Time : 2022/7/27 16:36
-@Author : 张大鹏
-@File : similar_text.go
-@Software: Goland2021.3.1
-@Description: levenshtein() 函数比 similar_text() 函数更快。不过，similar_text() 函数通过更少的必需修改次数提供更精确的结果。
-*/
-
 // SimilarText 实现PHP中的similar_text函数，用于比较两个文本的相似度
 func SimilarText(first, second string, percent *float64) int {
 	var similarText func(string, string, int, int) int

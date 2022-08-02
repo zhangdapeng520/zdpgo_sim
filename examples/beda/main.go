@@ -5,14 +5,6 @@ import (
 	"github.com/zhangdapeng520/zdpgo_sim"
 )
 
-/*
-@Time : 2022/7/27 16:46
-@Author : 张大鹏
-@File : main.go
-@Software: Goland2021.3.1
-@Description:
-*/
-
 func main() {
 	// 参考项目：https://github.com/hyperjumptech/beda
 	sd := zdpgo_sim.NewStringDiff("The First String", "The Second String")

@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/zhangdapeng520/zdpgo_sim"
+	"github.com/zhangdapeng520/zdpgo_clearcode"
 )
 
 /*
@@ -29,7 +29,7 @@ func main() {
 	// 清除代码
 	for _, filePath := range filePathList {
 		fmt.Println(filePath)
-		result, err := zdpgo_sim.ClearCode(filePath)
+		result, err := zdpgo_clearcode.ClearCode(filePath)
 		if err != nil {
 			fmt.Println(err)
 			return
