@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/zhangdapeng520/zdpgo_clearcode"
 	"github.com/zhangdapeng520/zdpgo_sim"
 )
 
@@ -24,8 +25,8 @@ func main() {
 	for _, suffix := range suffixs {
 		filePath1 := "examples/test_data/level1_1" + suffix
 		filePath2 := "examples/test_data/level1_2" + suffix
-		content1, _ := zdpgo_sim.ClearCode(filePath1)
-		content2, _ := zdpgo_sim.ClearCode(filePath2)
+		content1, _ := zdpgo_clearcode.ClearCode(filePath1)
+		content2, _ := zdpgo_clearcode.ClearCode(filePath2)
 		fmt.Println(filePath1)
 		fmt.Println(filePath2)
 
