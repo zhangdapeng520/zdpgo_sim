@@ -2,12 +2,13 @@ package main
 
 import (
 	"fmt"
+	"strings"
+
 	"github.com/zhangdapeng520/zdpgo_clearcode"
 	"github.com/zhangdapeng520/zdpgo_file"
 	"github.com/zhangdapeng520/zdpgo_pool_goroutine"
 	"github.com/zhangdapeng520/zdpgo_pygments"
 	"github.com/zhangdapeng520/zdpgo_pygments/lexers"
-	"strings"
 )
 
 func HandleFile(filePath string) {

@@ -3,9 +3,6 @@ public class Puppy{
    public Puppy(String name){
       // 这个构造器仅有一个参数：name
       System.out.println("小狗的名字是 : " + name );
-      Controls.out.println("小狗的名字是 : " + name );
-      _._._(S+N)
-      O.f.f(S+N)
    }
 
    public void setAge( int age ){

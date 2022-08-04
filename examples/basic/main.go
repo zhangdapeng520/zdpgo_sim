@@ -2,17 +2,10 @@ package main
 
 import (
 	"fmt"
+
 	"github.com/zhangdapeng520/zdpgo_clearcode"
 	"github.com/zhangdapeng520/zdpgo_sim"
 )
-
-/*
-@Time : 2022/7/27 16:16
-@Author : 张大鹏
-@File : main.go
-@Software: Goland2021.3.1
-@Description:
-*/
 
 func main() {
 	suffixs := []string{

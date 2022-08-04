@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+
 	"github.com/zhangdapeng520/zdpgo_sim/stringosim"
 )
 
@@ -68,4 +69,5 @@ func main() {
 			NGramSizes:      []int{3},
 		}))
 
+	fmt.Println(stringosim.LCS([]rune("abcde"), []rune("abdcde")))
 }
