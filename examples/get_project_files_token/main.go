@@ -6,8 +6,8 @@ import (
 
 	"github.com/zhangdapeng520/zdpgo_clearcode"
 	"github.com/zhangdapeng520/zdpgo_file"
+	"github.com/zhangdapeng520/zdpgo_lexers"
 	"github.com/zhangdapeng520/zdpgo_pygments"
-	"github.com/zhangdapeng520/zdpgo_pygments/lexers"
 )
 
 func main() {
@@ -22,7 +22,7 @@ func main() {
 			}
 
 			// 词法分析获取token
-			lexer := lexers.Match(filePath)
+			lexer := zdpgo_lexers.Match(filePath)
 			token, err := zdpgo_pygments.GetToken(lexer, content)
 			if err != nil {
 				fmt.Println("词法分析获取token失败：", err)

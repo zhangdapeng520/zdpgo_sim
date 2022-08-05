@@ -3,9 +3,6 @@ package main
 import (
 	"fmt"
 
-	"github.com/zhangdapeng520/zdpgo_clearcode"
-	"github.com/zhangdapeng520/zdpgo_lexers"
-	"github.com/zhangdapeng520/zdpgo_pygments"
 	"github.com/zhangdapeng520/zdpgo_sim"
 )
 
@@ -24,51 +21,15 @@ func main() {
 		filePath1 := "examples/test_data/level3_1" + suffix
 		filePath2 := "examples/test_data/level3_2" + suffix
 
-		// 1、将代码清洗，移除多余空行和字符串。
-		content1, _ := zdpgo_clearcode.ClearCode(filePath1)
-		content2, _ := zdpgo_clearcode.ClearCode(filePath2)
-
-		// 可选：如果是Python代码，清除main代码块
-		if suffix == ".py" {
-			content1 = zdpgo_clearcode.ClearPythonMain(content1)
-			content2 = zdpgo_clearcode.ClearPythonMain(content2)
-		}
-
 		// 2、将代码按换行符拆分，并移除干扰数据。这里的干扰数据包括空字符串，`{`，`};`等这种没有语义的字符串，需要根据不同的语言进行收集和定义。
-		content1Arr := zdpgo_clearcode.SplitCode(content1, "\n", zdpgo_sim.PythonRemoveArr)
-		content2Arr := zdpgo_clearcode.SplitCode(content2, "\n", zdpgo_sim.PythonRemoveArr)
-
 		// 3、将处理后代码数组进行token化。
-		// 词法分析获取token
-		lexer1 := zdpgo_lexers.Match(filePath1)
-		token1Arr, _ := zdpgo_pygments.GetTokenArr(lexer1, content1Arr)
-		lexer2 := zdpgo_lexers.Match(filePath2)
-		token2Arr, _ := zdpgo_pygments.GetTokenArr(lexer2, content2Arr)
+		token1Arr, _ := zdpgo_sim.GetFileTokenArr(filePath1)
+		token2Arr, _ := zdpgo_sim.GetFileTokenArr(filePath2)
 
 		// 4、按指定的数量级进行比较，比如每次比较1行，每次比较3行等。将指定的行合并为一个token字符串，然后使用相似度算法比较相似度。
 		lines := 2 // 每次比较2行
-		token1SpreadArr := zdpgo_pygments.GetSpreadTokenArr(token1Arr, lines)
-		token2SpreadArr := zdpgo_pygments.GetSpreadTokenArr(token2Arr, lines)
-		fmt.Println("=================")
-		for _, v := range token1Arr {
-			fmt.Println(v)
-		}
-		fmt.Println("xxx")
-		for _, v := range token1SpreadArr {
-			fmt.Println(v)
-		}
-		fmt.Println("=================")
-		fmt.Println("=================")
-		for _, v := range token2Arr {
-			fmt.Println(v)
-		}
-		fmt.Println("xxx")
-		for _, v := range token2SpreadArr {
-			fmt.Println(v)
-		}
-		fmt.Println("=================")
-		fmt.Println(token1SpreadArr)
-		fmt.Println(token2SpreadArr)
+		token1SpreadArr := zdpgo_sim.GetSpreadTokenArr(token1Arr, lines)
+		token2SpreadArr := zdpgo_sim.GetSpreadTokenArr(token2Arr, lines)
 
 		// 比较2与1的相似度，以2为主
 		for _, token2 := range token2SpreadArr {

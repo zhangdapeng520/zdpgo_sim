@@ -4,8 +4,8 @@ import (
 	"fmt"
 
 	"github.com/zhangdapeng520/zdpgo_clearcode"
+	"github.com/zhangdapeng520/zdpgo_lexers"
 	"github.com/zhangdapeng520/zdpgo_pygments"
-	"github.com/zhangdapeng520/zdpgo_pygments/lexers"
 	"github.com/zhangdapeng520/zdpgo_sim"
 )
 
@@ -28,9 +28,9 @@ func main() {
 		content2, _ := zdpgo_clearcode.ClearCode(filePath2)
 
 		// 词法分析获取token
-		lexer1 := lexers.Match(filePath1)
+		lexer1 := zdpgo_lexers.Match(filePath1)
 		token1, _ := zdpgo_pygments.GetToken(lexer1, content1)
-		lexer2 := lexers.Match(filePath2)
+		lexer2 := zdpgo_lexers.Match(filePath2)
 		token2, _ := zdpgo_pygments.GetToken(lexer2, content2)
 
 		//	莱文斯坦-编辑距离(Levenshtein)

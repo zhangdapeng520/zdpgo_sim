@@ -5,6 +5,19 @@ import (
 	"github.com/zhangdapeng520/zdpgo_type/maps/safemap"
 )
 
+type tokenPaire []string
+
+func (item tokenPaire) compare(other tokenPaire) int {
+	return 1
+}
+
+// ArrSimilarity 数组相似度
+type ArrSimilarity struct {
+	Token1     string  `json:"token1,omitempty"`
+	Token2     string  `json:"token2,omitempty"`
+	Similarity float32 `json:"similarity,omitempty"`
+}
+
 // GetProjectSimilarity 获取两个项目之间的相似度
 func GetProjectSimilarity(project1SafeMap, project2SafeMap *safemap.SafeMap[string, string],
 	poolSize int, algorithmFunc Option) *safemap.SafeMap[string, float32] {
@@ -33,8 +46,61 @@ func GetProjectSimilarity(project1SafeMap, project2SafeMap *safemap.SafeMap[stri
 	}
 
 	// 并行计算
-	zdpgo_pool_goroutine.RunBatchArgTask[string](10000, handleFunc, project1SafeMap.Keys())
+	zdpgo_pool_goroutine.RunBatchArgTask[string](
+		poolSize,
+		handleFunc,
+		project1SafeMap.Keys())
 
 	// 返回
 	return resultMap
+}
+
+// GetArrSimilarity 获取两个token数组的相似度
+func GetArrSimilarity(
+	token1Arr, token2Arr []string,
+	poolSize int,
+	algorithmFunc Option) []ArrSimilarity {
+
+	// 默认参数
+	if poolSize == 0 {
+		poolSize = 33333
+	}
+
+	// 结果
+	var smap = new(safemap.SafeMap[string, ArrSimilarity])
+	var result []ArrSimilarity
+
+	// 处理方法
+	// 参数：[[token1,token2],[token1,token2],...]
+	handleFunc := func(tokensArr []string) {
+		token1 := tokensArr[0]
+		token2 := tokensArr[1]
+		similarity := Compare(token1, token2, algorithmFunc)
+		obj := ArrSimilarity{
+			Token1:     token1,
+			Token2:     token2,
+			Similarity: float32(similarity),
+		}
+		smap.Set(token1+token2, obj)
+	}
+
+	// 构造参数
+	var args [][]string
+
+	// 以token1为准
+	for _, token1 := range token1Arr {
+		for _, token2 := range token2Arr {
+			args = append(args, []string{token1, token2})
+		}
+	}
+
+	// 并行计算
+	zdpgo_pool_goroutine.RunBatchArgTask[[]string](
+		poolSize,
+		handleFunc,
+		args)
+
+	// 返回
+	result = smap.Values()
+	return result
 }
