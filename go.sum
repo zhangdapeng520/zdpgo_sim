@@ -6,8 +6,8 @@ github.com/zhangdapeng520/zdpgo_lexers v0.1.1 h1:BAhvQdbyjoJ2b5n1t4lixMeHRPesPMw
 github.com/zhangdapeng520/zdpgo_lexers v0.1.1/go.mod h1:k65go1q40ma5U5gyiWIFLV1atsSoKKB09Xiz+RvBmzI=
 github.com/zhangdapeng520/zdpgo_pool_goroutine v0.1.1 h1:CuwsEU8rxtjxMWAVM5recosuPgNgJ1J8t+V62c7Kqow=
 github.com/zhangdapeng520/zdpgo_pool_goroutine v0.1.1/go.mod h1:3fMVFR6ZWouKXQ1C/hKD0Xmst/Ov6YFZFzaH1KW0scU=
-github.com/zhangdapeng520/zdpgo_pygments v0.1.7 h1:wPpux6Cm79kxpK0JLny5nN4FiQ2Jfb2xdDUb/NaE+Gs=
-github.com/zhangdapeng520/zdpgo_pygments v0.1.7/go.mod h1:yPH7VlRWHmaAhBQ4v7Bw5/BkTLElDkzkaefckRGbs/s=
+github.com/zhangdapeng520/zdpgo_pygments v0.1.8 h1:ZkdVSFLoty08hOwag8v1j6pa8Sa9YKOdQ2N3zWUdWa0=
+github.com/zhangdapeng520/zdpgo_pygments v0.1.8/go.mod h1:yPH7VlRWHmaAhBQ4v7Bw5/BkTLElDkzkaefckRGbs/s=
 github.com/zhangdapeng520/zdpgo_type v0.1.7 h1:xnKfzS6JfWRxGnD1bIORaZ0XnmPHHXYTs5AQnXd5z6Y=
 github.com/zhangdapeng520/zdpgo_type v0.1.7/go.mod h1:B69GHyAm8j9nEe05nH3z3tt9T6/DKjlQ4ETzZXXIzxY=
 golang.org/x/text v0.3.7 h1:olpwvP2KacW1ZWvsR7uQhoyTYvKAupfQrRGBFM352Gk=

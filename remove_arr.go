@@ -5,4 +5,13 @@ var (
 		"if __name__ == '__main__':",
 		"^print", // ^表示以什么开头
 	}
+	JavaRemoveArr = []string{
+		"{",
+		"}",
+	}
+	PHPRemoveArr = []string{
+		"<?php",
+		"?>",
+		"}",
+	}
 )

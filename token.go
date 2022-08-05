@@ -109,15 +109,20 @@ func GetFileTokenArr(filePath string) ([]string, error) {
 	if err != nil {
 		return nil, err
 	}
-	fmt.Println("源文件代码：", content)
 
 	// 参数准备
 	lexer := zdpgo_lexers.Match(filePath)
 	var removeArr []string
+
+	// 处理不同编程语言的特殊内容
 	if strings.HasSuffix(filePath, ".py") {
 		removeArr = PythonRemoveArr
 		// 可选：如果是Python代码，清除main代码块
 		content = zdpgo_clearcode.ClearPythonMain(content)
+	} else if strings.HasSuffix(filePath, ".java") {
+		removeArr = JavaRemoveArr
+	} else if strings.HasSuffix(filePath, ".php") {
+		removeArr = PHPRemoveArr
 	}
 
 	// 获取源码的token列表
@@ -130,7 +135,7 @@ func GetFileTokenArr(filePath string) ([]string, error) {
 	return tokenArr, nil
 }
 
-// 将token数组按照指定的数量展开
+// GetSpreadTokenArr 将token数组按照指定的数量展开
 func GetSpreadTokenArr(tokens []string, lines int) []string {
 	var result []string
 

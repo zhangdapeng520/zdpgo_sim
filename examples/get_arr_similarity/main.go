@@ -9,8 +9,8 @@ import (
 func main() {
 
 	suffixs := []string{
-		".py",
-		// ".php",
+		// ".py",
+		".php",
 		// ".java",
 		// ".c",
 		// ".cpp",
@@ -39,37 +39,37 @@ func main() {
 			zdpgo_sim.Cosine())
 		fmt.Println(result)
 
-		// 使用Levenshtein
-		result = zdpgo_sim.GetArrSimilarity(
-			token1SpreadArr,
-			token2SpreadArr,
-			10000,
-			zdpgo_sim.Default())
-		fmt.Println(result)
+		// // 使用Levenshtein
+		// result = zdpgo_sim.GetArrSimilarity(
+		// 	token1SpreadArr,
+		// 	token2SpreadArr,
+		// 	10000,
+		// 	zdpgo_sim.Default())
+		// fmt.Println(result)
 
-		// 使用Dice
-		result = zdpgo_sim.GetArrSimilarity(
-			token1SpreadArr,
-			token2SpreadArr,
-			10000,
-			zdpgo_sim.DiceCoefficient())
-		fmt.Println(result)
+		// // 使用Dice
+		// result = zdpgo_sim.GetArrSimilarity(
+		// 	token1SpreadArr,
+		// 	token2SpreadArr,
+		// 	10000,
+		// 	zdpgo_sim.DiceCoefficient())
+		// fmt.Println(result)
 
-		// 使用JaroWinkler
-		result = zdpgo_sim.GetArrSimilarity(
-			token1SpreadArr,
-			token2SpreadArr,
-			10000,
-			zdpgo_sim.JaroWinkler())
-		fmt.Println(result)
+		// // 使用JaroWinkler
+		// result = zdpgo_sim.GetArrSimilarity(
+		// 	token1SpreadArr,
+		// 	token2SpreadArr,
+		// 	10000,
+		// 	zdpgo_sim.JaroWinkler())
+		// fmt.Println(result)
 
-		// 使用Hamming
-		result = zdpgo_sim.GetArrSimilarity(
-			token1SpreadArr,
-			token2SpreadArr,
-			10000,
-			zdpgo_sim.Hamming())
-		fmt.Println(result)
+		// // 使用Hamming
+		// result = zdpgo_sim.GetArrSimilarity(
+		// 	token1SpreadArr,
+		// 	token2SpreadArr,
+		// 	10000,
+		// 	zdpgo_sim.Hamming())
+		// fmt.Println(result)
 	}
 
 }
