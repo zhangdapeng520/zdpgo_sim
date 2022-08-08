@@ -30,7 +30,7 @@ func main() {
 		startTime := time.Now()
 
 		// 获取token
-		projectTokenMap, err := zdpgo_sim.GetProjectToken(
+		projectTokenArrMap, err := zdpgo_sim.GetProjectTokenArr(
 			tt.projectDir,
 			poolSize,
 			tt.codeSuffix,
@@ -42,8 +42,11 @@ func main() {
 
 		// 遍历
 		if tt.showDetail {
-			for _, k := range projectTokenMap.Keys() {
-				fmt.Println(projectTokenMap.Get(k))
+			for _, k := range projectTokenArrMap.Keys() {
+				fmt.Println(k)
+				for _, token := range projectTokenArrMap.Get(k) {
+					fmt.Println(token)
+				}
 				fmt.Println()
 			}
 		}
@@ -51,7 +54,8 @@ func main() {
 		fmt.Printf("%s\t%s\t%d\t%dms\n",
 			tt.projectDir,
 			tt.codeSuffix,
-			projectTokenMap.Len(),
+			projectTokenArrMap.Len(),
 			time.Since(startTime).Milliseconds())
 	}
+
 }

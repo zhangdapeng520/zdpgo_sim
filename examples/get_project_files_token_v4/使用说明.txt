@@ -1,0 +1,5 @@
+命令如下：
+.\token.exe "D:\\zdppy\\django_for_api_4.0" .py
+
+第一个参数：项目目录
+第二个参数：源码后缀

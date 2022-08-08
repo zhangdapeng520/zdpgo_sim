@@ -12,15 +12,28 @@ var (
 	PHPRemoveArr = []string{
 		"<?php",
 		"?>",
+		"{",
 		"}",
+		"],",
+		"];",
+		"],",
+		"});",
+		"{}",
 	}
 	CRemoveArr = []string{
 		"{",
 		"}",
+		"}else{",
+		"else",
+		"return1;",
+		"};",
 	}
 	CPPRemoveArr = []string{
 		"{",
 		"}",
 		"^using namespace",
+		"}else{",
+		"else",
+		"};",
 	}
 )
