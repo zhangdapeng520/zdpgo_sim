@@ -3,7 +3,14 @@ package zdpgo_sim
 import (
 	"github.com/zhangdapeng520/zdpgo_pool_goroutine"
 	"github.com/zhangdapeng520/zdpgo_type/maps/safemap"
+	"math/rand"
+	"strconv"
+	"time"
 )
+
+func init() {
+	rand.Seed(time.Now().UTC().Unix())
+}
 
 type tokenPaire []string
 
@@ -81,7 +88,7 @@ func GetArrSimilarity(
 			Token2:     token2,
 			Similarity: float32(similarity),
 		}
-		smap.Set(token1+token2, obj)
+		smap.Set(token1+token2+strconv.Itoa(rand.Int()), obj)
 	}
 
 	// 构造参数

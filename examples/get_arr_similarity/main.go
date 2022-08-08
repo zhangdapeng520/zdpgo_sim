@@ -10,10 +10,10 @@ func main() {
 
 	suffixs := []string{
 		// ".py",
-		".php",
-		// ".java",
-		// ".c",
-		// ".cpp",
+		//".php",
+		//".java",
+		//".c",
+		".cpp",
 	}
 	for _, suffix := range suffixs {
 		fmt.Println("\n正在比较后缀为", suffix, "类型的源码文件\n")

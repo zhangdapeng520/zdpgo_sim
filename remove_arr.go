@@ -14,4 +14,13 @@ var (
 		"?>",
 		"}",
 	}
+	CRemoveArr = []string{
+		"{",
+		"}",
+	}
+	CPPRemoveArr = []string{
+		"{",
+		"}",
+		"^using namespace",
+	}
 )

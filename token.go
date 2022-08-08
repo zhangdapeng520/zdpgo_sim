@@ -123,6 +123,10 @@ func GetFileTokenArr(filePath string) ([]string, error) {
 		removeArr = JavaRemoveArr
 	} else if strings.HasSuffix(filePath, ".php") {
 		removeArr = PHPRemoveArr
+	} else if strings.HasSuffix(filePath, ".c") {
+		removeArr = CRemoveArr
+	} else if strings.HasSuffix(filePath, ".cpp") {
+		removeArr = CPPRemoveArr
 	}
 
 	// 获取源码的token列表
