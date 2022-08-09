@@ -14,7 +14,7 @@ func main() {
 		ignoreDirs []string // 被忽略的文件夹
 		showDetail bool     // 查看查看详细内容
 	}{
-		{"D:\\zdppy\\django_for_api_4.0", ".py", []string{"venv", ".git", ".idea"}, false},
+		{"D:\\zdppy\\django_for_api_4.0", ".py", []string{"venv", ".git", ".idea"}, true},
 		{"D:\\tmp\\springboot-bucket", ".java", []string{"out", ".mvn", ".git", ".idea"}, false},
 		{"D:\\tmp\\thinkphp", ".php", []string{"out", ".mvn", ".git", ".idea"}, false},
 		{"D:\\tmp\\FastCFS", ".c", []string{"out", ".mvn", ".git", ".idea"}, false},

@@ -12,6 +12,7 @@ require (
 	golang.org/x/text v0.3.7
 )
 
-// replace github.com/zhangdapeng520/zdpgo_clearcode v0.1.3 => ../zdpgo_clearcode
-
-//replace github.com/zhangdapeng520/zdpgo_pygments v0.1.7 => ../zdpgo_pygments
+replace (
+	github.com/zhangdapeng520/zdpgo_clearcode v0.1.4 => ../zdpgo_clearcode
+	github.com/zhangdapeng520/zdpgo_pygments v0.1.8 => ../zdpgo_pygments
+)

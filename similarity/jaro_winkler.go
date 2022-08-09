@@ -58,7 +58,6 @@ func (j *JaroWinkler) CompareUtf8(s1, s2 string) float64 {
 				continue
 			}
 
-			//fmt.Printf("_______c %c:%d:%d\n", c, l2-1-i, mw)
 			if math.Abs(float64(l2-1-i)) <= float64(mw) {
 				m++
 
@@ -95,7 +94,7 @@ func (j *JaroWinkler) CompareUtf8(s1, s2 string) float64 {
 	j.mw = mw
 	j.m = m
 	j.t = t
-	//fmt.Printf("l1:%d, l2:%d, m:%d, t:%d\n", l1, l2, m, t)
+
 	// s1 和 s2 的相同前缀长度
 	prefixLength := 0
 	for i := 0; i < min(len(s1), len(s2)); i++ {
