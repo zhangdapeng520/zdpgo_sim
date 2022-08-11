@@ -1,7 +1,9 @@
 package zdpgo_sim
 
 import (
+	"errors"
 	"fmt"
+	"path/filepath"
 	"strings"
 
 	"github.com/zhangdapeng520/zdpgo_clearcode"
@@ -16,6 +18,13 @@ var (
 	projectTokenMap    = new(safemap.SafeMap[string, string])
 	projectTokenArrMap = new(safemap.SafeMap[string, []string])
 	projectDir         string
+	lexerMap           = map[string]zdpgo_pygments.Lexer{
+		".py":   zdpgo_lexers.Get("Python"),
+		".java": zdpgo_lexers.Get("Java"),
+		".php":  zdpgo_lexers.Get("PHP"),
+		".c":    zdpgo_lexers.Get("C"),
+		".cpp":  zdpgo_lexers.Get("C++"),
+	}
 )
 
 func getFileToken(filePath string) {
@@ -27,16 +36,21 @@ func getFileToken(filePath string) {
 	}
 
 	// 词法分析获取token
-	lexer := zdpgo_lexers.Match(filePath)
-	token, err := zdpgo_pygments.GetToken(lexer, content)
-	if err != nil {
-		fmt.Println("词法分析获取token失败：", err)
+	//lexer := zdpgo_lexers.Match(filePath)
+	if lexer, ok := lexerMap[filepath.Ext(filePath)]; ok {
+		token, err := zdpgo_pygments.GetToken(lexer, content)
+		if err != nil {
+			fmt.Println("词法分析获取token失败：", err)
+			return
+		}
+
+		// 添加token
+		filePath = strings.Replace(filePath, projectDir, "", -1)
+		projectTokenMap.Set(filePath, token)
+	} else {
+		fmt.Println("不支持的文件类型：", filePath)
 		return
 	}
-
-	// 添加token
-	filePath = strings.Replace(filePath, projectDir, "", -1)
-	projectTokenMap.Set(filePath, token)
 }
 
 // getFileTokenArr 获取文件的token数组
@@ -187,32 +201,36 @@ func GetFileTokenArr(filePath string) ([]string, error) {
 	}
 
 	// 参数准备
-	lexer := zdpgo_lexers.Match(filePath)
-	var removeArr []string
+	if lexer, ok := lexerMap[filepath.Ext(filePath)]; ok {
+		var removeArr []string
 
-	// 处理不同编程语言的特殊内容
-	if strings.HasSuffix(filePath, ".py") {
-		removeArr = PythonRemoveArr
-		// 可选：如果是Python代码，清除main代码块
-		content = zdpgo_clearcode.ClearPythonMain(content)
-	} else if strings.HasSuffix(filePath, ".java") {
-		removeArr = JavaRemoveArr
-	} else if strings.HasSuffix(filePath, ".php") {
-		removeArr = PHPRemoveArr
-	} else if strings.HasSuffix(filePath, ".c") {
-		removeArr = CRemoveArr
-	} else if strings.HasSuffix(filePath, ".cpp") {
-		removeArr = CPPRemoveArr
+		// 处理不同编程语言的特殊内容
+		if strings.HasSuffix(filePath, ".py") {
+			removeArr = PythonRemoveArr
+			// 可选：如果是Python代码，清除main代码块
+			content = zdpgo_clearcode.ClearPythonMain(content)
+		} else if strings.HasSuffix(filePath, ".java") {
+			removeArr = JavaRemoveArr
+		} else if strings.HasSuffix(filePath, ".php") {
+			removeArr = PHPRemoveArr
+		} else if strings.HasSuffix(filePath, ".c") {
+			removeArr = CRemoveArr
+		} else if strings.HasSuffix(filePath, ".cpp") {
+			removeArr = CPPRemoveArr
+		}
+
+		// 获取源码的token列表
+		tokenArr, err := GetSourceCodeTokenArr(lexer, content, "\n", removeArr)
+		if err != nil {
+			return nil, err
+		}
+
+		// 返回
+		return tokenArr, nil
+	} else {
+		fmt.Println("不支持的文件类型：", filePath)
+		return nil, errors.New("不支持的文件类型")
 	}
-
-	// 获取源码的token列表
-	tokenArr, err := GetSourceCodeTokenArr(lexer, content, "\n", removeArr)
-	if err != nil {
-		return nil, err
-	}
-
-	// 返回
-	return tokenArr, nil
 }
 
 // GetSpreadTokenArr 将token数组按照指定的数量展开
