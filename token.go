@@ -2,6 +2,7 @@ package zdpgo_sim
 
 import (
 	"bytes"
+	"crypto/md5"
 	"errors"
 	"fmt"
 	"path/filepath"
@@ -275,4 +276,34 @@ func GetProjectToken(tokenMap *safemap.SafeMap[string, string]) string {
 
 	// 返回
 	return tokenBuffer.String()
+}
+
+// GetProjectTokenSplitArr 将token字典按照指定的精准度，转换为token数组
+func GetProjectTokenSplitArr(tokenMap *safemap.SafeMap[string, string], splitNum int) []string {
+	// 按照文件名排序
+	keys := tokenMap.Keys()
+	sort.Strings(keys)
+
+	// [1,2,3,4] 4
+	// [1,2,3],[2,3,4]
+	var tokens []string
+	for i := 0; i <= len(keys)-splitNum; i++ {
+		var tokenBuffer bytes.Buffer
+		for j := i; j < i+splitNum; j++ {
+			tokenBuffer.WriteString(tokenMap.Get(keys[i]))
+			tokenBuffer.WriteString(" ")
+		}
+		tokens = append(tokens, tokenBuffer.String())
+	}
+
+	// 返回
+	return tokens
+}
+
+// GetMd5 获取一个文本的md5值
+func GetMd5(text string) string {
+	data := []byte(text)
+	has := md5.Sum(data)
+	md5str1 := fmt.Sprintf("%x", has) //将[]byte转成16进制
+	return md5str1
 }

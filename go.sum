@@ -1,7 +1,7 @@
 github.com/zhangdapeng520/zdpgo_clearcode v0.1.5 h1:g5+QNkYEMTIAeSKTuyFgHbyIneZAX7cw9ZNhGhuXWuM=
 github.com/zhangdapeng520/zdpgo_clearcode v0.1.5/go.mod h1:GwA5f03xPsqTeizxRGBCK56jXgPt4fAaLulYi6Jx48Y=
-github.com/zhangdapeng520/zdpgo_es v0.1.0 h1:8/kWxq2FJTxR8jZbAbVcWM91Bv+cPX2G5igwthhf6fQ=
-github.com/zhangdapeng520/zdpgo_es v0.1.0/go.mod h1:/I0LRjlqw+47qjKQV7vwOsiHAcW4NZio+wpiuGhkKoA=
+github.com/zhangdapeng520/zdpgo_es v0.1.1 h1:hM7Ogfu+BhL3EDRqoIeSu7hVw88wzM6NfgN1gqR4MEY=
+github.com/zhangdapeng520/zdpgo_es v0.1.1/go.mod h1:/I0LRjlqw+47qjKQV7vwOsiHAcW4NZio+wpiuGhkKoA=
 github.com/zhangdapeng520/zdpgo_file v1.0.9 h1:gusZLioeAJw54WsxwtyGgo68CRQbJmWiR2Az1ypTh1U=
 github.com/zhangdapeng520/zdpgo_file v1.0.9/go.mod h1:hOQvYtMA1GQm5R/0cIK2vEwL4qybldZ+uEpd3n5NDsM=
 github.com/zhangdapeng520/zdpgo_json v0.1.2 h1:E5Zf0VpTFZP5VrVGQqp7nvYsOQhDhIg2vQEkjldwlJc=
