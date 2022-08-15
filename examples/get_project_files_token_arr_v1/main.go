@@ -14,11 +14,10 @@ func main() {
 		ignoreDirs []string // 被忽略的文件夹
 		showDetail bool     // 查看查看详细内容
 	}{
-		{"D:\\zdppy\\django_for_api_4.0", ".py", []string{"venv", ".git", ".idea"}, true},
-		{"D:\\tmp\\springboot-bucket", ".java", []string{"out", ".mvn", ".git", ".idea"}, false},
-		{"D:\\tmp\\thinkphp", ".php", []string{"out", ".mvn", ".git", ".idea"}, false},
-		{"D:\\tmp\\FastCFS", ".c", []string{"out", ".mvn", ".git", ".idea"}, false},
-		{"D:\\tmp\\QWidgetDemo", ".cpp", []string{"out", ".mvn", ".git", ".idea"}, false},
+		{"/tmp/springboot-bucket", ".java", []string{"out", ".mvn", ".git", ".idea"}, false},
+		{"/tmp/thinkphp", ".php", []string{"out", ".mvn", ".git", ".idea"}, false},
+		{"/tmp/fastdfs", ".c", []string{"out", ".mvn", ".git", ".idea"}, false},
+		{"/tmp/PlantsVsZombies", ".cpp", []string{"out", ".mvn", ".git", ".idea"}, false},
 	}
 
 	// 连接池数量
