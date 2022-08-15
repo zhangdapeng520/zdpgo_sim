@@ -1,9 +1,11 @@
 package zdpgo_sim
 
 import (
+	"bytes"
 	"errors"
 	"fmt"
 	"path/filepath"
+	"sort"
 	"strings"
 
 	"github.com/zhangdapeng520/zdpgo_clearcode"
@@ -66,7 +68,8 @@ func getFileTokenArr(filePath string) {
 	projectTokenArrMap.Set(filePath, tokenArr)
 }
 
-func GetProjectToken(
+// GetProjectTokenMap 获取项目的token字典
+func GetProjectTokenMap(
 	projectPath string,
 	poolSize int,
 	codeSuffix string,
@@ -255,4 +258,21 @@ func GetSpreadTokenArr(tokens []string, lines int) []string {
 		result = append(result, token)
 	}
 	return result
+}
+
+// GetProjectToken 获取项目的token
+func GetProjectToken(tokenMap *safemap.SafeMap[string, string]) string {
+	// 按照文件名排序
+	keys := tokenMap.Keys()
+	sort.Strings(keys)
+
+	// 遍历并生成大的token
+	var tokenBuffer bytes.Buffer
+	for _, k := range keys {
+		tokenBuffer.WriteString(tokenMap.Get(k))
+		tokenBuffer.WriteString("\n")
+	}
+
+	// 返回
+	return tokenBuffer.String()
 }
