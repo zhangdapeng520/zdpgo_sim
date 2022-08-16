@@ -4,32 +4,10 @@ import (
 	"fmt"
 	"github.com/zhangdapeng520/zdpgo_es"
 	"github.com/zhangdapeng520/zdpgo_sim"
-	"strings"
+	"time"
 )
 
 func main() {
-	//projectName := "RuoYi"
-	//openSourceAddress := "https://gitee.com/y_project/RuoYi.git"
-	projectDir := "/data/tmp/RuoYi"
-	//language := "java"
-	suffix := ".java"
-	ignoreDirs := []string{"out", ".mvn", ".git", ".idea"}
-
-	// 连接池数量
-	// 这里可以给每个文件分配一个Goroutine，还要根据内存来，1G内存可以8W个（需自行测试）
-	poolSize := 10000
-
-	// 获取token
-	projectTokenMap, err := zdpgo_sim.GetProjectTokenArr(
-		projectDir,
-		poolSize,
-		suffix,
-		ignoreDirs)
-	if err != nil {
-		fmt.Println("获取项目token失败：", err)
-		return
-	}
-
 	// 创建ES对象
 	e, err := zdpgo_es.NewWithConfig(&zdpgo_es.Config{
 		Debug:     true,
@@ -42,28 +20,44 @@ func main() {
 		panic(err)
 	}
 
-	indexName := "token_java"
+	// 源码文件路径
+	filePath := "/data/tmp/RuoYi/ruoyi-admin/src/main/java/com/ruoyi/web/controller/common/CommonController.java"
 
-	// 查询文件token
-	fileToken := strings.Join(projectTokenMap.Values()[0], " ")
-	resp, err := e.SearchDocument(indexName, zdpgo_es.SearchRequest{
-		//Source: zdpgo_es.GetMap("excludes", []string{"token_content"}),
-		Query: &zdpgo_es.Query{
-			Match: zdpgo_es.GetMap("token_content", zdpgo_es.GetMap(
-				"query", fileToken,
-				"fuzziness", "auto",
-				"minimum_should_match", "90%")),
-		},
-	})
-	fmt.Println(fileToken)
-	fmt.Println("xxxxxxxxxxxxxxxxxxxx")
+	startTime := time.Now()
+	fmt.Println("开始查询文件级相似度：", filePath)
+
+	// 获取分割前token
+	token, err := zdpgo_sim.GetFileToken(filePath)
 	if err != nil {
 		panic(err)
 	}
-	for _, project := range resp.Hits.Hits {
-		fmt.Println(project.Source["file_path"])
-		pToken := project.Source["token_content"]
-		fmt.Println(pToken)
-		fmt.Println("================")
+
+	// 从项目级token里面匹配
+	// 获取按换行符分割后的token
+	token, err = zdpgo_sim.GetFileTokenFromArr(filePath)
+	if err != nil {
+		panic(err)
+	}
+
+	// 查询源码级token
+	indexName := "token_java"
+	resp, err := e.SearchDocument(indexName, zdpgo_es.SearchRequest{
+		Source: zdpgo_es.GetMap("excludes", []string{"token_content", "tokens"}),
+		Query: &zdpgo_es.Query{
+			MatchPhrase: nil,
+			Match: zdpgo_es.GetMap("token_content", zdpgo_es.GetMap(
+				"query", token,
+				"fuzziness", "auto",
+				"minimum_should_match", "90%",
+			)),
+		},
+	})
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println("查询文件级相似度结束，消耗时间：", time.Since(startTime).Milliseconds(), "ms")
+	fmt.Println("查询到以下数据可能相似：")
+	for _, source := range resp.Hits.Hits {
+		fmt.Println(source.Source["project_name"], source.Source["file_path"])
 	}
 }

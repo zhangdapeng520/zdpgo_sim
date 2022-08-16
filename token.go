@@ -30,7 +30,7 @@ var (
 	}
 )
 
-func getFileToken(filePath string) {
+func handleFileToken(filePath string) {
 	// 代码清洗
 	content, err := zdpgo_clearcode.ClearCode(filePath)
 	if err != nil {
@@ -54,6 +54,40 @@ func getFileToken(filePath string) {
 		fmt.Println("不支持的文件类型：", filePath)
 		return
 	}
+}
+
+func GetFileToken(filePath string) (string, error) {
+	// 代码清洗
+	content, err := zdpgo_clearcode.ClearCode(filePath)
+	if err != nil {
+		fmt.Println("代码清洗失败：", err)
+		return "", err
+	}
+
+	// 词法分析获取token
+	lexer := zdpgo_lexers.Match(filePath)
+	token, err := zdpgo_pygments.GetToken(lexer, content)
+	if err != nil {
+		fmt.Println("词法分析获取token失败：", err)
+		return "", err
+	}
+
+	// 返回
+	return token, nil
+}
+
+func GetFileTokenFromArr(filePath string) (string, error) {
+	// 获取token列表
+	tokens, err := GetFileTokenArr(filePath)
+	if err != nil {
+		return "", err
+	}
+
+	// 合并token列表
+	token := strings.Join(tokens, " ")
+
+	// 返回
+	return token, nil
 }
 
 // getFileTokenArr 获取文件的token数组
@@ -116,7 +150,7 @@ func GetProjectTokenMap(
 	}
 
 	// 使用Goroutine协程池，并发的生成token
-	zdpgo_pool_goroutine.RunBatchArgTask[string](poolSize, getFileToken, filePathList)
+	zdpgo_pool_goroutine.RunBatchArgTask[string](poolSize, handleFileToken, filePathList)
 
 	// 返回
 	return projectTokenMap, nil
