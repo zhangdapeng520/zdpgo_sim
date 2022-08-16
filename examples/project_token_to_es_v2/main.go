@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/zhangdapeng520/zdpgo_es"
 	"github.com/zhangdapeng520/zdpgo_sim"
+	"github.com/zhangdapeng520/zdpgo_uuid"
 	"time"
 )
 
@@ -64,7 +65,13 @@ func main() {
 		panic(err)
 	}
 
+	// 添加文档
 	indexName := "token_project_java"
+
+	// 测试阶段先清空索引，防止数据重复
+	if _, err = e.DeleteIndex(indexName); err != nil {
+		panic(err)
+	}
 
 	// 连接池数量
 	// 这里可以给每个文件分配一个Goroutine，还要根据内存来，1G内存可以8W个（需自行测试）
@@ -72,7 +79,7 @@ func main() {
 
 	// 获取token
 	for _, p := range testData {
-		fmt.Println("开始查询项目：", p.ProjectName)
+		fmt.Println("开始计算项目：", p.ProjectName)
 		startTime := time.Now()
 
 		projectTokenMap, err := zdpgo_sim.GetProjectTokenMap(
@@ -91,19 +98,24 @@ func main() {
 		// 获取项目hash
 		md5Hash := zdpgo_sim.GetMd5(token)
 
-		// 根据hash查询
-		resp, err := e.SearchDocument(indexName, zdpgo_es.SearchRequest{
-			Source: zdpgo_es.GetMap("excludes", []string{"token_content"}),
-			Query: &zdpgo_es.Query{
-				Match: zdpgo_es.GetMap("clear_hash", md5Hash),
-			},
-		})
-		if err != nil {
-			panic(err)
+		// 要保存到es的对象
+		projectId := zdpgo_uuid.StringNoLine()
+		project := projectToken{
+			ProjectName:       p.ProjectName,
+			Language:          p.Language,
+			Suffix:            p.Suffix,
+			OpenSourceAddress: p.OpenSourceAddress,
+			ClearHash:         md5Hash,
+			TokenContent:      token,
 		}
 
-		fmt.Println("项目查询完成：", p.ProjectName)
-		fmt.Println("ES中相似的项目信息如下：\n", resp.Hits.Hits[0].Source)
+		// 批量添加文档
+		response, err := e.AddDocument(indexName, projectId, &project)
+		if response.StatusCode != 201 || err != nil {
+			panic("添加文档失败")
+		}
+
+		fmt.Println("项目计算完成：", p.ProjectName)
 		fmt.Println("消耗时间：", time.Since(startTime).Milliseconds(), "ms\n")
 	}
 }

@@ -20,7 +20,7 @@ func main() {
 	codeSuffix := ".py"
 
 	// 获取token
-	projectTokenMap, err := zdpgo_sim.GetProjectToken(projectDir, poolSize, codeSuffix, ignoreDirs)
+	projectTokenMap, err := zdpgo_sim.GetProjectTokenMap(projectDir, poolSize, codeSuffix, ignoreDirs)
 	if err != nil {
 		fmt.Println("获取项目token失败：", err)
 		return
