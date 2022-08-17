@@ -1,7 +1,6 @@
 package main
 
 import (
-	"bytes"
 	"fmt"
 	"github.com/zhangdapeng520/zdpgo_es"
 	"github.com/zhangdapeng520/zdpgo_sim"
@@ -10,14 +9,18 @@ import (
 )
 
 type projectToken struct {
-	ProjectName       string   `json:"project_name"`        // 项目名
-	Language          string   `json:"language"`            // 编程语言
-	Suffix            string   `json:"suffix"`              // 文件后缀
-	OpenSourceAddress string   `json:"open_source_address"` // 开源地址
-	ClearHash         string   `json:"clear_hash"`          // 清洗后文件hash
-	TokenContent      string   `json:"token_content"`       // 未hash之前的token按空格拼接
-	FilePath          string   `json:"file_path"`           // 文件路径
-	Tokens            []string `json:"tokens"`              // token列表
+	ProjectName       string `json:"project_name"`        // 项目名
+	Language          string `json:"language"`            // 编程语言
+	Suffix            string `json:"suffix"`              // 文件后缀
+	OpenSourceAddress string `json:"open_source_address"` // 开源地址
+	OriginHash        string `json:"origin_hash"`         // 原始文件hash
+	ClearCode         string `json:"clear_code"`          // 清洗后代码
+	ClearHash         string `json:"clear_hash"`          // 清洗后文件hash
+	FilePath          string `json:"file_path"`           // 文件路径
+	FileSize          int64  `json:"file_size"`           // 文件大小
+	TokenContent      string `json:"token_content"`       // 按空格拼接文件的token数组
+	TokenContentHash  string `json:"token_content_hash"`  // token_content的hash值
+	HashContent       string `json:"hash_content"`        // 将文件的token数组全部hash，然后按空格拼接
 }
 
 func main() {
@@ -85,7 +88,7 @@ func main() {
 		fmt.Println("开始计算项目：", p.ProjectName)
 		startTime := time.Now()
 
-		projectTokenArrMap, err := zdpgo_sim.GetProjectTokenArr(
+		projectFileInfo, err := zdpgo_sim.GetProjectFileInfo(
 			p.ProjectDir,
 			poolSize,
 			p.Suffix,
@@ -103,30 +106,26 @@ func main() {
 
 		// 遍历token，转换为hash，封装要存储到es的对象
 		// 这里的key是文件名，value是该文件对应的token数组
-		for _, k := range projectTokenArrMap.Keys() {
+		for _, k := range projectFileInfo.Keys() {
+			// 源码文件信息
+			fileInfo := projectFileInfo.Get(k)
+
 			// 要保存到es的对象
 			project := projectToken{
 				ProjectName:       p.ProjectName,
 				Language:          p.Language,
 				Suffix:            p.Suffix,
 				OpenSourceAddress: p.OpenSourceAddress,
+				OriginHash:        fileInfo.OriginHash,
 				FilePath:          k,
-				Tokens:            nil,
+				FileSize:          fileInfo.FileSize,
+				ClearCode:         fileInfo.ClearCode,
+				ClearHash:         fileInfo.ClearHash,
+				TokenContent:      fileInfo.TokenContent,
+				TokenContentHash:  fileInfo.TokenContentHash,
+				HashContent:       fileInfo.HashContent,
 			}
 
-			var (
-				md5List []string
-				buffer  bytes.Buffer // 将token列表按空格拼接
-			)
-
-			for _, token := range projectTokenArrMap.Get(k) {
-				md5List = append(md5List, zdpgo_sim.GetMd5(token))
-				buffer.WriteString(token)
-				buffer.WriteString(" ")
-			}
-			project.TokenContent = buffer.String()
-			project.ClearHash = zdpgo_sim.GetMd5(project.TokenContent)
-			project.Tokens = md5List
 			projectList = append(projectList, &project)
 			projectIdList = append(projectIdList, zdpgo_uuid.StringNoLine())
 		}

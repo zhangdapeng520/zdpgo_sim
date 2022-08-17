@@ -68,7 +68,7 @@ func main() {
 		fmt.Println("开始查询项目：", p.ProjectName)
 		startTime := time.Now()
 
-		projectTokenMap, err := zdpgo_sim.GetProjectTokenMap(
+		projectFileInfo, err := zdpgo_sim.GetProjectFileInfo(
 			p.ProjectDir,
 			poolSize,
 			p.Suffix,
@@ -79,10 +79,9 @@ func main() {
 		}
 
 		// 获取项目token
-		hashContent := zdpgo_sim.GetProjectHash(projectTokenMap)
+		hashContent := zdpgo_sim.GetProjectHash(projectFileInfo)
 
 		// 根据hash查询
-		//fmt.Println(hashContent)
 		resp, err := e.SearchDocument(indexName, zdpgo_es.SearchRequest{
 			Source: zdpgo_type.GetMap("excludes", zdpgo_type.GetArrString("token_content", "hash_content")),
 			Query: &zdpgo_es.Query{

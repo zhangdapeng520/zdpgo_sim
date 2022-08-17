@@ -33,13 +33,6 @@ func main() {
 		panic(err)
 	}
 
-	// 从项目级token里面匹配
-	// 获取按换行符分割后的token
-	token, err = zdpgo_sim.GetFileTokenFromArr(filePath)
-	if err != nil {
-		panic(err)
-	}
-
 	// 查询源码级token
 	indexName := "token_java"
 	resp, err := e.SearchDocument(indexName, zdpgo_es.SearchRequest{

@@ -84,7 +84,7 @@ func main() {
 		fmt.Println("开始计算项目级指纹：", p.ProjectName)
 		startTime := time.Now()
 
-		projectTokenMap, err := zdpgo_sim.GetProjectTokenMap(
+		projectFileInfo, err := zdpgo_sim.GetProjectFileInfo(
 			p.ProjectDir,
 			poolSize,
 			p.Suffix,
@@ -95,13 +95,13 @@ func main() {
 		}
 
 		// 获取项目token
-		token := zdpgo_sim.GetProjectToken(projectTokenMap)
+		token := zdpgo_sim.GetProjectToken(projectFileInfo)
 
 		// 获取项目hash
 		md5Hash := zdpgo_password.GetMd5(token)
 
 		// 获取项目hash内容
-		hashContent := zdpgo_sim.GetProjectHash(projectTokenMap)
+		hashContent := zdpgo_sim.GetProjectHash(projectFileInfo)
 
 		// 要保存到es的对象
 		projectId := zdpgo_uuid.StringNoLine()

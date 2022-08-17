@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/zhangdapeng520/zdpgo_es"
+	"github.com/zhangdapeng520/zdpgo_password"
 	"github.com/zhangdapeng520/zdpgo_sim"
 	"github.com/zhangdapeng520/zdpgo_type"
 	"time"
@@ -67,7 +68,7 @@ func main() {
 		fmt.Println("开始查询项目：", p.ProjectName)
 		startTime := time.Now()
 
-		projectTokenMap, err := zdpgo_sim.GetProjectTokenMap(
+		projectTokenMap, err := zdpgo_sim.GetProjectFileInfo(
 			p.ProjectDir,
 			poolSize,
 			p.Suffix,
@@ -81,11 +82,11 @@ func main() {
 		token := zdpgo_sim.GetProjectToken(projectTokenMap)
 
 		// 获取项目hash
-		md5Hash := zdpgo_sim.GetMd5(token)
+		md5Hash := zdpgo_password.GetMd5(token)
 
 		// 根据hash查询
 		resp, err := e.SearchDocument(indexName, zdpgo_es.SearchRequest{
-			Source: zdpgo_type.GetMap("excludes", []string{"token_content"}),
+			Source: zdpgo_type.GetMap("excludes", zdpgo_type.GetArrString("token_content", "clear_hash", "hash_content")),
 			Query: &zdpgo_es.Query{
 				Match: zdpgo_type.GetMap("clear_hash", md5Hash),
 			},

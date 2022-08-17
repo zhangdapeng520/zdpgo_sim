@@ -2,8 +2,8 @@ github.com/zhangdapeng520/zdpgo_clearcode v0.1.5 h1:g5+QNkYEMTIAeSKTuyFgHbyIneZA
 github.com/zhangdapeng520/zdpgo_clearcode v0.1.5/go.mod h1:GwA5f03xPsqTeizxRGBCK56jXgPt4fAaLulYi6Jx48Y=
 github.com/zhangdapeng520/zdpgo_es v0.1.2 h1:ge2ZkewNv2RgwxY6sOGPpth/ZBg5yA47B4htb2R/xNY=
 github.com/zhangdapeng520/zdpgo_es v0.1.2/go.mod h1:VTPvcw+DwKUbNDfx1Sc+kSwmWBW0kS4EEMduJ4rv9ew=
-github.com/zhangdapeng520/zdpgo_file v1.0.9 h1:gusZLioeAJw54WsxwtyGgo68CRQbJmWiR2Az1ypTh1U=
-github.com/zhangdapeng520/zdpgo_file v1.0.9/go.mod h1:hOQvYtMA1GQm5R/0cIK2vEwL4qybldZ+uEpd3n5NDsM=
+github.com/zhangdapeng520/zdpgo_file v1.1.0 h1:OM27ErW1sPdNfBMwGj387yvwU7AsWn3Sp+b//HgCAts=
+github.com/zhangdapeng520/zdpgo_file v1.1.0/go.mod h1:hOQvYtMA1GQm5R/0cIK2vEwL4qybldZ+uEpd3n5NDsM=
 github.com/zhangdapeng520/zdpgo_lexers v0.1.1 h1:BAhvQdbyjoJ2b5n1t4lixMeHRPesPMwyF9G9YdWx7DU=
 github.com/zhangdapeng520/zdpgo_lexers v0.1.1/go.mod h1:k65go1q40ma5U5gyiWIFLV1atsSoKKB09Xiz+RvBmzI=
 github.com/zhangdapeng520/zdpgo_password v1.3.1 h1:kzlbk/XdcAlNLNtKLQA/hxbymTC9l829vZZiDui8uyU=
