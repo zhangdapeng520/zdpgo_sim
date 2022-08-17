@@ -8,15 +8,7 @@ import (
 	"time"
 )
 
-type projectToken struct {
-	ProjectName       string `json:"project_name"`        // 项目名
-	Language          string `json:"language"`            // 编程语言
-	Suffix            string `json:"suffix"`              // 文件后缀
-	OpenSourceAddress string `json:"open_source_address"` // 开源地址
-	ClearHash         string `json:"clear_hash"`          // 清洗后文件hash
-	TokenContent      string `json:"token_content"`       // 未hash之前的token按空格拼接
-}
-
+// 获取项目的所有文件中，有多少（百分比）文件是相似的
 func main() {
 	testData := []struct {
 		ProjectName       string
@@ -87,16 +79,17 @@ func main() {
 		}
 
 		// 获取项目token
-		token := zdpgo_sim.GetProjectToken(projectTokenMap)
-
-		// 获取项目hash
-		md5Hash := zdpgo_sim.GetMd5(token)
+		hashContent := zdpgo_sim.GetProjectHash(projectTokenMap)
 
 		// 根据hash查询
+		//fmt.Println(hashContent)
 		resp, err := e.SearchDocument(indexName, zdpgo_es.SearchRequest{
-			Source: zdpgo_type.GetMap("excludes", []string{"token_content"}),
+			Source: zdpgo_type.GetMap("excludes", zdpgo_type.GetArrString("token_content", "hash_content")),
 			Query: &zdpgo_es.Query{
-				Match: zdpgo_type.GetMap("clear_hash", md5Hash),
+				Match: zdpgo_type.GetMap("hash_content", zdpgo_type.GetMap(
+					"query", hashContent,
+					"fuzziness", "auto",
+					"minimum_should_match", "80%")),
 			},
 		})
 		if err != nil {
@@ -104,7 +97,7 @@ func main() {
 		}
 
 		fmt.Println("项目查询完成：", p.ProjectName)
-		fmt.Println("ES中相似的项目信息如下：\n", resp.Hits.Hits[0].Source)
+		fmt.Println("ES中相似的项目信息如下：\n", resp.Hits.Hits)
 		fmt.Println("消耗时间：", time.Since(startTime).Milliseconds(), "ms\n")
 	}
 }

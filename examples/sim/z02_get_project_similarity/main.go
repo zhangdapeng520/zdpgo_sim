@@ -8,15 +8,6 @@ import (
 	"time"
 )
 
-type projectToken struct {
-	ProjectName       string `json:"project_name"`        // 项目名
-	Language          string `json:"language"`            // 编程语言
-	Suffix            string `json:"suffix"`              // 文件后缀
-	OpenSourceAddress string `json:"open_source_address"` // 开源地址
-	ClearHash         string `json:"clear_hash"`          // 清洗后文件hash
-	TokenContent      string `json:"token_content"`       // 未hash之前的token按空格拼接
-}
-
 func main() {
 	testData := []struct {
 		ProjectName       string

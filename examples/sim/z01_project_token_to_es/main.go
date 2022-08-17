@@ -1,23 +1,22 @@
 package main
 
 import (
-	"bytes"
 	"fmt"
 	"github.com/zhangdapeng520/zdpgo_es"
+	"github.com/zhangdapeng520/zdpgo_password"
 	"github.com/zhangdapeng520/zdpgo_sim"
 	"github.com/zhangdapeng520/zdpgo_uuid"
 	"time"
 )
 
 type projectToken struct {
-	ProjectName       string   `json:"project_name"`        // 项目名
-	Language          string   `json:"language"`            // 编程语言
-	Suffix            string   `json:"suffix"`              // 文件后缀
-	OpenSourceAddress string   `json:"open_source_address"` // 开源地址
-	ClearHash         string   `json:"clear_hash"`          // 清洗后文件hash
-	TokenContent      string   `json:"token_content"`       // 未hash之前的token按空格拼接
-	FilePath          string   `json:"file_path"`           // 文件路径
-	Tokens            []string `json:"tokens"`              // token列表
+	ProjectName       string `json:"project_name"`        // 项目名
+	Language          string `json:"language"`            // 编程语言
+	Suffix            string `json:"suffix"`              // 文件后缀
+	OpenSourceAddress string `json:"open_source_address"` // 开源地址
+	ClearHash         string `json:"clear_hash"`          // 清洗后文件hash
+	TokenContent      string `json:"token_content"`       // 未hash之前的token按空格拼接
+	HashContent       string `json:"hash_content"`        // 将每个token进行hash然后拼接成一个字符串
 }
 
 func main() {
@@ -69,7 +68,7 @@ func main() {
 	}
 
 	// 添加文档
-	indexName := "token_java"
+	indexName := "token_project_java"
 
 	// 测试阶段先清空索引，防止数据重复
 	if _, err = e.DeleteIndex(indexName); err != nil {
@@ -82,10 +81,10 @@ func main() {
 
 	// 获取token
 	for _, p := range testData {
-		fmt.Println("开始计算项目：", p.ProjectName)
+		fmt.Println("开始计算项目级指纹：", p.ProjectName)
 		startTime := time.Now()
 
-		projectTokenArrMap, err := zdpgo_sim.GetProjectTokenArr(
+		projectTokenMap, err := zdpgo_sim.GetProjectTokenMap(
 			p.ProjectDir,
 			poolSize,
 			p.Suffix,
@@ -95,49 +94,34 @@ func main() {
 			return
 		}
 
-		// 计算token和hash
-		var (
-			projectIdList []string
-			projectList   []interface{}
-		)
+		// 获取项目token
+		token := zdpgo_sim.GetProjectToken(projectTokenMap)
 
-		// 遍历token，转换为hash，封装要存储到es的对象
-		// 这里的key是文件名，value是该文件对应的token数组
-		for _, k := range projectTokenArrMap.Keys() {
-			// 要保存到es的对象
-			project := projectToken{
-				ProjectName:       p.ProjectName,
-				Language:          p.Language,
-				Suffix:            p.Suffix,
-				OpenSourceAddress: p.OpenSourceAddress,
-				FilePath:          k,
-				Tokens:            nil,
-			}
+		// 获取项目hash
+		md5Hash := zdpgo_password.GetMd5(token)
 
-			var (
-				md5List []string
-				buffer  bytes.Buffer // 将token列表按空格拼接
-			)
+		// 获取项目hash内容
+		hashContent := zdpgo_sim.GetProjectHash(projectTokenMap)
 
-			for _, token := range projectTokenArrMap.Get(k) {
-				md5List = append(md5List, zdpgo_sim.GetMd5(token))
-				buffer.WriteString(token)
-				buffer.WriteString(" ")
-			}
-			project.TokenContent = buffer.String()
-			project.ClearHash = zdpgo_sim.GetMd5(project.TokenContent)
-			project.Tokens = md5List
-			projectList = append(projectList, &project)
-			projectIdList = append(projectIdList, zdpgo_uuid.StringNoLine())
+		// 要保存到es的对象
+		projectId := zdpgo_uuid.StringNoLine()
+		project := projectToken{
+			ProjectName:       p.ProjectName,
+			Language:          p.Language,
+			Suffix:            p.Suffix,
+			OpenSourceAddress: p.OpenSourceAddress,
+			ClearHash:         md5Hash,
+			TokenContent:      token,
+			HashContent:       hashContent,
 		}
 
 		// 批量添加文档
-		response, err := e.AddManyDocument(indexName, projectIdList, projectList)
-		if response.Status != 200 || err != nil {
+		response, err := e.AddDocument(indexName, projectId, &project)
+		if response.Status != 201 || err != nil {
 			panic("添加文档失败")
 		}
 
-		fmt.Println("项目计算并存入ES8完成：", p.ProjectName)
+		fmt.Println("项目级指纹计算并存入ES8完成：", p.ProjectName)
 		fmt.Println("消耗时间：", time.Since(startTime).Milliseconds(), "ms\n")
 	}
 }

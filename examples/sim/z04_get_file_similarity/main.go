@@ -49,7 +49,7 @@ func main() {
 			Match: zdpgo_type.GetMap("token_content", zdpgo_type.GetMap(
 				"query", token,
 				"fuzziness", "auto",
-				"minimum_should_match", "90%",
+				"minimum_should_match", "95%", // 可以通过这个参数调整相似度，这个值越低，匹配的数量越多
 			)),
 		},
 	})

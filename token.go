@@ -2,7 +2,6 @@ package zdpgo_sim
 
 import (
 	"bytes"
-	"crypto/md5"
 	"errors"
 	"fmt"
 	"path/filepath"
@@ -12,6 +11,7 @@ import (
 	"github.com/zhangdapeng520/zdpgo_clearcode"
 	"github.com/zhangdapeng520/zdpgo_file"
 	"github.com/zhangdapeng520/zdpgo_lexers"
+	"github.com/zhangdapeng520/zdpgo_password"
 	"github.com/zhangdapeng520/zdpgo_pool_goroutine"
 	"github.com/zhangdapeng520/zdpgo_pygments"
 	"github.com/zhangdapeng520/zdpgo_type/maps/safemap"
@@ -305,7 +305,25 @@ func GetProjectToken(tokenMap *safemap.SafeMap[string, string]) string {
 	var tokenBuffer bytes.Buffer
 	for _, k := range keys {
 		tokenBuffer.WriteString(tokenMap.Get(k))
-		tokenBuffer.WriteString("\n")
+		tokenBuffer.WriteString(" ")
+	}
+
+	// 返回
+	return tokenBuffer.String()
+}
+
+// GetProjectHash 获取项目的每个文件的hash，按空格拼接为一个字符串
+func GetProjectHash(tokenMap *safemap.SafeMap[string, string]) string {
+	// 按照文件名排序
+	keys := tokenMap.Keys()
+	sort.Strings(keys)
+
+	// 遍历并生成大的token
+	var tokenBuffer bytes.Buffer
+	for _, k := range keys {
+		tokenHash := zdpgo_password.GetMd5(tokenMap.Get(k))
+		tokenBuffer.WriteString(tokenHash)
+		tokenBuffer.WriteString(" ")
 	}
 
 	// 返回
@@ -332,12 +350,4 @@ func GetProjectTokenSplitArr(tokenMap *safemap.SafeMap[string, string], splitNum
 
 	// 返回
 	return tokens
-}
-
-// GetMd5 获取一个文本的md5值
-func GetMd5(text string) string {
-	data := []byte(text)
-	has := md5.Sum(data)
-	md5str1 := fmt.Sprintf("%x", has) //将[]byte转成16进制
-	return md5str1
 }
