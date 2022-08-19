@@ -5,7 +5,6 @@ import (
 	"github.com/zhangdapeng520/zdpgo_es"
 	"github.com/zhangdapeng520/zdpgo_password"
 	"github.com/zhangdapeng520/zdpgo_sim"
-	"github.com/zhangdapeng520/zdpgo_uuid"
 	"time"
 )
 
@@ -101,18 +100,18 @@ func main() {
 		md5Hash := zdpgo_password.GetMd5(token)
 
 		// 获取项目hash内容
-		hashContent := zdpgo_sim.GetProjectHash(projectFileInfo)
+		//hashContent := zdpgo_sim.GetProjectHash(projectFileInfo)
 
 		// 要保存到es的对象
-		projectId := zdpgo_uuid.StringNoLine()
+		projectId := zdpgo_password.GetMd5(p.OpenSourceAddress)
 		project := projectToken{
 			ProjectName:       p.ProjectName,
 			Language:          p.Language,
 			Suffix:            p.Suffix,
 			OpenSourceAddress: p.OpenSourceAddress,
 			ClearHash:         md5Hash,
-			TokenContent:      token,
-			HashContent:       hashContent,
+			//TokenContent:      token,
+			//HashContent:       hashContent,
 		}
 
 		// 批量添加文档

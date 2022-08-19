@@ -85,8 +85,9 @@ func main() {
 		md5Hash := zdpgo_password.GetMd5(token)
 
 		// 根据hash查询
+		fmt.Println(md5Hash)
 		resp, err := e.SearchDocument(indexName, zdpgo_es.SearchRequest{
-			Source: zdpgo_type.GetMap("excludes", zdpgo_type.GetArrString("token_content", "clear_hash", "hash_content")),
+			//Source: zdpgo_type.GetMap("excludes", zdpgo_type.GetArrString("token_content", "clear_hash", "hash_content")),
 			Query: &zdpgo_es.Query{
 				Match: zdpgo_type.GetMap("clear_hash", md5Hash),
 			},
@@ -96,7 +97,7 @@ func main() {
 		}
 
 		fmt.Println("项目查询完成：", p.ProjectName)
-		fmt.Println("ES中相似的项目信息如下：\n", resp.Hits.Hits[0].Source)
+		fmt.Println("ES中相似的项目信息如下：\n", resp.Hits.Hits)
 		fmt.Println("消耗时间：", time.Since(startTime).Milliseconds(), "ms\n")
 	}
 }

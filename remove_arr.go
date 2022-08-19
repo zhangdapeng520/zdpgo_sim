@@ -15,6 +15,8 @@ var (
 	JavaRemoveArr = []string{
 		"{",
 		"}",
+		"^package",
+		"^import",
 	}
 	PHPRemoveArr = []string{
 		"<?php",

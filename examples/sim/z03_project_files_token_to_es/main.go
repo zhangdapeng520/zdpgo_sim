@@ -3,8 +3,8 @@ package main
 import (
 	"fmt"
 	"github.com/zhangdapeng520/zdpgo_es"
+	"github.com/zhangdapeng520/zdpgo_password"
 	"github.com/zhangdapeng520/zdpgo_sim"
-	"github.com/zhangdapeng520/zdpgo_uuid"
 	"time"
 )
 
@@ -119,15 +119,15 @@ func main() {
 				OriginHash:        fileInfo.OriginHash,
 				FilePath:          k,
 				FileSize:          fileInfo.FileSize,
-				ClearCode:         fileInfo.ClearCode,
-				ClearHash:         fileInfo.ClearHash,
-				TokenContent:      fileInfo.TokenContent,
-				TokenContentHash:  fileInfo.TokenContentHash,
-				HashContent:       fileInfo.HashContent,
+				//ClearCode:         fileInfo.ClearCode,
+				ClearHash:        fileInfo.ClearHash,
+				TokenContent:     fileInfo.TokenContent,
+				TokenContentHash: fileInfo.TokenContentHash,
+				HashContent:      fileInfo.HashContent,
 			}
 
 			projectList = append(projectList, &project)
-			projectIdList = append(projectIdList, zdpgo_uuid.StringNoLine())
+			projectIdList = append(projectIdList, zdpgo_password.GetMd5(p.OpenSourceAddress+fileInfo.FilePath))
 		}
 
 		// 批量添加文档
